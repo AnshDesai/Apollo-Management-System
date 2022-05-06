@@ -1,0 +1,78 @@
+{% extends 'Rms_mainpage.html' %}
+{%load crispy_forms_tags %} 
+<!DOCTYPE html>  
+<html lang="en">  
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+
+    
+{% block content %}
+
+<h4 class="heading">RE-ISSUE MRN</h4>
+<hr>
+<style>
+    textarea {
+    border: 0 none white;
+    overflow: hidden;
+    padding: 0;
+    outline: none;
+    background-color: #D0D0D0;
+}
+    .post-form{
+      font-family:  "Monaco", monospace;
+    }
+    .asteriskField {
+    content: ' *';
+    color: red;}
+.heading{
+    color: #5A2C84;
+    text-align: center;
+    font-family:  "Monaco", monospace;
+    font-weight: bold;
+}
+  </style>
+
+    <div class="row justify-content-center">
+        <div class="col-7">
+            <div class="card" style="background-color: #e5e7e9;">
+                <div class="card-body">
+                    <form method="POST" class="post-form">   
+                            {% csrf_token %}
+                            <table class="table-sm">
+                                <tr>
+                                <td>{{ form.shift|as_crispy_field }}</td>
+                                <td>{{ form.issuedon|as_crispy_field }}</td>
+                                <td>{{ form.remarks|as_crispy_field }}</td>
+                                </tr>
+                                <tr>
+                                <td>{{ form.mrno|as_crispy_field }}</td>
+                                <td>{{ form.itemcode|as_crispy_field }}</td>
+                                </tr>
+
+                                <tr><td>
+                                <button type="submit" class="btn" name="matissue" style="background-color: #5A2C84;color:white">Issue</button>
+                                </td>
+                                </tr>
+                    <tr><td >
+                            {% if messages %}
+                                <ul class="messages">
+                                    {% for message in messages %}
+                                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                                    {% endfor %}
+                                 </ul>
+                            {% endif %}      
+                        </td>
+                    </tr>
+                    </form>
+  
+                    </table>
+                </div>
+                </div>
+            </div>
+        </div> 
+   
+{% endblock %}
+</body>  
+
+</html>  

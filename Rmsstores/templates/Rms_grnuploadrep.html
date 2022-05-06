@@ -1,0 +1,110 @@
+{% extends 'Rms_mainpage.html' %}
+{%load crispy_forms_tags %}     
+{% block content %}
+<h4 class="heading">GRN Temp Upload</h4>
+<hr>
+<style>
+    .heading{
+    color: #5A2C84;
+    text-align: center;
+    font-family:  "Monaco", monospace;
+    font-weight: bold;
+}  
+table, td, th {  
+    font-size: 11px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  padding: 15px;
+}
+th{
+    background-color: #5A2C84;
+    color: white;
+    text-transform: uppercase;}
+.btn{
+  background-color: #5A2C84;
+  color: white;
+  padding: 4px 12px;
+  text-align: center;
+  display: inline-block;
+}
+
+</style>
+<script>
+    function validate() {
+        number = document.getElementById("number").value
+            alert('You are about to DELETE records of upload number :'+number);
+            return confirm('Do you really want to DELETE the records?');
+       
+        }
+
+    </script>
+    
+    <div class="row">
+        <div class="col-auto">
+        <div class="span6">
+    <div>
+                    <table class="table table-sm table-striped">
+                        <thead>
+                           
+                            <tr>
+                                <th></th><th>Type</th><th>Packet AvgQty</th>
+                                <th>Serial No</th><th>Upload No</th><th>Itemdoc</th>
+                                <th>Itemcode</th><th>Itemdesc</th><th>Batch</th><th>Sloc</th><th>grgi</th>
+                                <th>headertxt</th><th>unloadpt</th><th>landbill</th><th>glacc</th><th>recepient</th>
+                                <th>mvt</th><th>mttext</th><th>po</th><th>reference</th><th>stobin</th>
+                                <th>usname</th><th>valtype</th><th>vcode</th><th>quantity</th>
+                                <th>unit</th><th>pstdate</th><th>mandate</th>
+                                <th>sled</th><th>amountlc</th><th>curr</th><th>docdate</th><th>entrydate</th><th>oun</th><th>ounqty</th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <form method="post" role="form" method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                {{ form.management_form }}
+                                {% for form,user in l %}
+                            <tr>
+                                {{ form.errors }}
+                                <td>{{ form.delete|as_crispy_field }}</td>
+                                <td>{{ form.type|as_crispy_field }}</td>
+                                <td>{{ form.avgqty|as_crispy_field }}</td>
+                                <td>{{ user.1 }}</td><td>{{ user.0 }}</td><td>{{ user.4 }}</td>
+                                <td>{{ user.5 }}</td><td>{{ user.6 }}</td><td>{{ user.7 }}</td><td>{{ user.8 }}</td><td>{{ user.9 }}</td>
+                                <td>{{ user.10 }}</td><td>{{ user.11 }}</td><td>{{ user.12 }}</td><td>{{ user.13 }}</td><td>{{ user.14 }}</td>
+                                <td>{{ user.15 }}</td><td>{{ user.16 }}</td><td>{{ user.17 }}</td><td>{{ user.18 }}</td><td>{{ user.19 }}</td>
+                                <td>{{ user.20 }}</td><td>{{ user.21 }}</td><td>{{ user.22 }}</td><td>{{ user.23 }}</td><td>{{ user.24 }}</td>
+                                <td>{{ user.25|date:"d/m/Y" }}</td><td>{{ user.26|date:"d/m/Y" }}</td><td>{{ user.27|date:"d/m/Y" }}</td><td>{{ user.28 }}</td><td>{{ user.29 }}</td>
+                                <td>{{ user.30|date:"d/m/Y" }}</td><td>{{ user.31|date:"d/m/Y" }}</td><td>{{ user.32 }}</td><td>{{ user.33 }}</td>
+                                
+                            </tr>
+                            {% endfor %}
+                           
+                            
+                        </tbody>
+                    </table>
+                </div>
+               
+                    <input type="submit" class="btn" value="CONFIRM" name="update">
+        
+                    <input type="submit" class="btn" id="display" value="DELETE MULTIPLE" name="delete">
+    
+            </form>
+        </div>
+            <div style="margin-top: 1%;" class="span6">
+            <form method="POST" onsubmit="return validate();">
+                {% csrf_token %}
+                <input type="text" id ="number" autocomplete="off" required=True name="number">
+                <input type="submit" class="btn" value="DELETE" name="deleteupd">         
+            </form>
+        </div>
+    </div>
+    
+    {% endblock %}

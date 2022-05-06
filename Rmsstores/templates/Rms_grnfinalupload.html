@@ -1,0 +1,115 @@
+{% extends 'Rms_mainpage.html' %}
+{% load static %}
+{%load crispy_forms_tags %}
+{% load widget_tweaks %}
+<html>
+{% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<h4 class="heading">GRN Final Upload</h4>
+<hr>
+<style>
+.heading{
+  color: #5A2C84;
+  text-align: center;
+  font-family:  "Monaco", monospace;
+  font-weight: bold;
+}  
+table, td, th {  
+font-size: 11px;  
+text-align: center;
+}
+
+table {
+border: 1px solid #ddd;
+border-collapse: collapse;
+width: 100%;
+}
+option{
+  text-align: center;
+}
+th{
+  background-color: #5A2C84;
+  color: white;
+  text-transform: uppercase;}
+.btn{
+background-color: #5A2C84;
+color: white;
+
+text-align: center;
+display: inline-block;
+}
+.export{
+background-color: #5A2C84;
+color: white;
+padding: 4px 12px; 
+text-align: center;
+text-decoration: none;
+display: inline-block;
+}
+</style>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<div class="row">
+  <div class="col-auto">
+
+      <table id="division" class="table table-sm table-bordered table-striped">
+    
+      <tr>  <th><button class="btn"><i class="fa fa-trash"></i></button></th><th></th><th>Type</th>
+            <th>Serial No</th><th>Upload No</th><th>IssuedMR</th><th>Itemdoc</th><th>Itemcode</th><th>Itemdesc</th><th>Batch</th><th>Sloc</th><th>grgi</th><th>headertxt</th><th>unloadpt</th><th>landbill</th>
+            <th>glacc</th><th>recepient</th><th>mvt</th><th>mttext</th><th>po</th><th>reference</th><th>stobin</th>
+            <th>usname</th><th>valtype</th><th>vcode</th><th>Available Qty</th><th>Recieved Qty</th><th>unit</th><th>pstdate</th><th>mandate</th>
+            <th>sled</th><th>amountlc</th><th>curr</th><th>docdate</th><th>entrydate</th><th>oun</th><th>ounqty</th><th>Packet AvgQty</th><th>Packets</th>
+      </tr>
+      <form method="post" role="form" name="form"  enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.management_form }}
+        {% for form,user in l %}
+        <tr id="row">
+          <td>{{ form.delete }}</td>
+          <input type="hidden" onload="typechange(id);" value="{{ form.type.value }}" id="{{ user.2 }}{{ user.3 }}">
+          <td> <input type="hidden" value="" id="code"name="code"><input value="" type="hidden" id="doc"name="doc">
+          
+            <button style="background-color: #5A2C84;" type="submit" value="edit" name="edit"onclick="onedit(this,'{{ user.2 }}','{{ user.3 }}')"><span style="color:white;  font-size:14px" class="fa">&#xf040;</span></button></td>    
+            <td>{{ form.type }}</td>
+            <td>{{ user.1 }}</td><td>{{ user.0 }}</td> <td>{{ user.36 }}</td> <td>{{ user.2 }}</td><td>{{ user.3 }}</td><td>{{ user.4 }}</td>
+            <td>{{ user.5 }}</td><td>{{ user.6 }}</td><td>{{ user.7 }}</td><td>{{ user.8 }}</td><td>{{ user.9 }}</td>
+            <td>{{ user.10 }}</td><td>{{ user.11 }}</td><td>{{ user.12 }}</td><td>{{ user.13 }}</td><td>{{ user.14 }}</td>
+            <td>{{ user.15 }}</td><td>{{ user.16 }}</td><td>{{ user.17 }}</td><td>{{ user.18 }}</td><td>{{ user.19 }}</td>
+            <td>{{ user.20 }}</td><td>{{ user.21 }}</td><td>{{ user.22 }}</td><td>{{ user.23 }}</td><td>{{ user.24 }}</td>
+            <td>{{ user.25 }}</td><td>{{ user.26 }}</td><td>{{ user.27 }}</td><td>{{ user.28 }}</td><td>{{ user.29 }}</td>
+            <td>{{ user.30 }}</td><td>{{ user.31 }}</td><td>{{ user.33 }}</td><td>{{ user.34 }}</td><td>{{ user.35 }}</td>
+            </tr>
+          {% empty %}
+            <tr>
+              <td colspan="5">No data</td>
+            </tr>
+
+          {% endfor %}
+
+  </table>
+         
+<input type="submit" class="btn" value="UPDATE" name="update">
+<input type="submit" class="btn" id="display" value="DELETE MULTIPLE" name="delete">
+
+</form>
+</div>
+<script>
+  function onedit(element,doc,code){
+  if (element.value=="edit"){
+    document.getElementById('code').value = code;
+    document.getElementById('doc').value = doc;
+  document.form.action.value = "Rms_grneditform";
+  document.form.submit();
+}
+}
+function typechange(id){
+console.log("fws");
+type = document.getElementById(id).value;
+if(type == "Parked"){
+  document.getElementById("row").style ="background: rgb(0, 126, 0);";
+}         
+}
+</script>
+{% block javascript %}
+{% endblock %}
+{% endblock %}
+</html>

@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+<html>
+  <body>
+    {% block content %}
+    <div class="row">
+      <div class="col">
+        <a  href="Rmsstores">
+        <img  class="object-cover object-cover w-1 h-half block" src="{% static "./images/rms.jpg" %}" >
+      </a>
+      <div class="mt-2">
+        <h4 class="text-gray-900 title-font text-lg ">RMS_STORE</h4>
+        <h6 class="text-gray-500 text-xs tracking-widest  mb-1">{{ request.session.Users }}-{{ request.session.Name }}</h6>
+        </div></div>
+      <div class="col">
+      <a  href="#">
+        <img  class="object-cover object-cover w-1 h-half block" src="{% static "./images/rms.jpg" %}">
+      </a>
+      <div class="mt-2">
+        <h4 class="text-gray-900 title-font text-lg ">MODULE 2</h4>
+        <h6 class="text-gray-500 text-xs tracking-widest  mb-1"></h6>
+        </div></div>
+      <div class="col">
+        <a  href="#">
+          <img  class="object-cover object-cover w-1 h-half block" src="{% static "./images/rms.jpg" %}">
+        </a>
+        <div class="mt-2">
+          <h4 class="text-gray-900 title-font text-lg ">MODULE 3</h4>
+          <h6 class="text-gray-500 text-xs tracking-widest  mb-1"></h6>
+          </div>
+      </div>
+      <div class="col">
+        <a  href="#">
+          <img  class="object-cover object-cover w-1 h-half block" src="{% static "./images/rms.jpg" %}">
+        </a>
+        <div class="mt-2">
+          <h4 class="text-gray-900 title-font text-lg ">MODULE 4</h4>
+          <h6 class="text-gray-500 text-xs tracking-widest  mb-1"></h6>
+          </div>
+      </div>
+    </div>
+    {% endblock %}
+  </body>
+</html>

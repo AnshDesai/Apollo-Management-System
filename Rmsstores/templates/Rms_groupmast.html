@@ -1,0 +1,53 @@
+{% extends 'Rms_mainpage.html' %}
+{%load crispy_forms_tags %} 
+<!DOCTYPE html>  
+<html lang="en">  
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+<body>  
+    
+{% block content %}
+<h4 class="heading">Group Master</h4>
+<hr>
+<style>
+    .heading{
+    color: #5A2C84;
+    text-align: center;
+    font-family:  "Monaco", monospace;
+    font-weight: bold;
+}      .post-form{
+      font-family:  "Monaco", monospace;
+    }
+    .asteriskField {
+    content: ' *';
+    color: red;}
+
+  </style>
+    <div class="row justify-content-center">
+        <div class="col-3">
+            <div class="card" style="background-color: #e5e7e9;">
+                <div class="card-body">
+                    <form method="POST" class="post-form">   
+                            {% csrf_token %}
+                            {{ form.plt.as_hidden}}  
+                            {{ form.groupno|as_crispy_field }}  
+                    </div>
+                            <button type="submit" class="btn" style="background-color: #5A2C84;color:white">Save</button>
+                            {% if messages %}
+                                <ul class="messages">
+                                    {% for message in messages %}
+                                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                                    {% endfor %}
+                                 </ul>
+                            {% endif %}      
+                    </form>
+                    
+                </div>
+            </div>
+        </div> 
+   
+{% endblock %}
+</body>  
+
+</html>  

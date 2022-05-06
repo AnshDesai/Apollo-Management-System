@@ -1,0 +1,315 @@
+{% load static %}
+<html>
+  <title>Apollo Login</title>    
+       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
+<style>
+    
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+/* 	
+  	background-image: url("/static/images/download.jpg"); */
+	background-size: 95pc;
+	display: flex;
+	justify-content: center;
+	align-items: right;
+	flex-direction: column;
+	font-family: 'Montserrat', sans-serif;
+	height: 85vh;
+	
+ 	background-position: center;
+  	overflow-y: hidden;
+}
+
+h1 {
+	font-weight: bold;
+	margin: 0;
+}
+
+h2 {
+	text-align: center;
+}
+
+a {
+	color: #333;
+	font-size: 14px;
+	text-decoration: none;
+	margin: 15px 0;
+}
+
+button {
+  font-family: Garamond, serif;
+	border-radius: 20px;
+	border: 1px solid #000000;
+	background-color: #e65531;
+	/* background: linear-gradient( #6daddb 10%, #313131 94%); */
+	color: #FFFFFF;
+	font-size: 12px;
+	font-weight: bold;
+	padding: 12px 45px;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	transition: transform 80ms ease-in;
+}
+
+button:active {
+	transform: scale(0.95);
+}
+
+button:focus {
+	outline: none;
+}
+
+button.ghost {
+	background-color: transparent;
+	border-color: #FFFFFF;
+}
+
+.form-container form {
+  font-family: Garamond, serif;
+	background-color: #FFFFFF;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	padding: 0 50px;
+	height: 100%;
+	text-align: center;
+	
+}
+
+.container input,select  {
+	background-color: #eee;
+	border: none;
+	padding: 12px 15px;
+	margin: 8px 0;
+	width: 100%;
+	
+}
+
+input:required:focus {
+  border: 1px solid red;
+  outline: red;
+}
+select:required:focus {
+  border: 1px solid red;
+  outline: none;
+}
+.container {
+	background-color: #fff;
+	border-radius: 10px;
+  	box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+	position: relative;
+	overflow: hidden;
+	width: 600px;
+	opacity: 75%;
+	min-height: 420px;
+}
+.container:hover{
+	opacity: 100%;
+}
+.form-container {
+	position: absolute;
+	top: 0;
+	height: 100%;
+	opacity: 100%;
+	transition: all 0.6s ease-in-out;
+}
+
+.sign-in-container {
+	left: 0;
+	width: 50%;
+	z-index: 2;
+}
+
+.container.right-panel-active .sign-in-container {
+	transform: translateX(100%);
+}
+
+.sign-up-container {
+	left: 0;
+	width: 50%;
+	opacity: 0;
+	z-index: 1;
+}
+
+.container.right-panel-active .sign-up-container {
+	transform: translateX(100%);
+	opacity: 1;
+	z-index: 5;
+	animation: show 0.6s;
+}
+
+@keyframes show {
+	0%, 49.99% {
+		opacity: 0;
+		z-index: 1;
+	}
+	
+	50%, 100% {
+		opacity: 1;
+		z-index: 5;
+	}
+}
+
+.overlay-container {
+ 
+	position: absolute;
+	top: 0;
+	left: 50%;
+	width: 50%;
+	height: 100%;
+	overflow: hidden;
+	transition: transform 0.6s ease-in-out;
+	z-index: 100;
+}
+
+.container.right-panel-active .overlay-container{
+	transform: translateX(-100%);
+}
+
+.overlay {
+	background: #FF416C;
+	background: -webkit-linear-gradient(to left, #FF4B2B, #FF416C);
+	background: linear-gradient(315deg, #A40606 0%, #D98324 64%);
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: 0 0;
+	color: #FFFFFF;
+	position: relative;
+	left: -100%;
+	height: 100%;
+	width: 200%;
+  	transform: translateX(0);
+	transition: transform 0.6s ease-in-out;
+}
+.modal-lg {
+    max-width: 30% !important;
+	max-height: 30%;
+}
+.container.right-panel-active .overlay {
+  	transform: translateX(50%);
+}
+
+.overlay-panel {
+	position: absolute;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	padding: 0 40px;
+	text-align: center;
+	top: 0;
+	height: 100%;
+	width: 50%;
+	transform: translateX(0);
+	transition: transform 0.6s ease-in-out;
+}
+
+.overlay-left {
+	transform: translateX(-20%);
+}
+
+.container.right-panel-active .overlay-left {
+	transform: translateX(0);
+}
+
+.overlay-right {
+	right: 0;
+	transform: translateX(0);
+}
+
+.container.right-panel-active .overlay-right {
+	transform: translateX(20%);
+}
+    </style>    
+ <body>
+<div class="container" id="container">
+	<div class="form-container sign-up-container">
+		<form action="#" autocomplete="off">
+			<h3><b style="font-family: Garamond, serif;">Admin Login</b></h3>
+			<input type="text" required placeholder="Username" />
+			<input type="password" required placeholder="Password" />
+			<button >Login</button>
+		</form>
+	</div>
+	<div class="form-container sign-in-container">
+		<form method="POST" autocomplete="off">
+      {% csrf_token %} 
+      <h3><b style="font-family: Garamond, serif;">User Login</b></h3>
+            <input type="text" required name="emp_id" placeholder="Emp ID" />
+			<input type="text" required name="plt" placeholder="Plant No." />
+			<input type="password" required name="passwd" placeholder="Password" />
+            <select required name ="finyear">
+                <option value="" selected="selected">Finyear</option>
+                {%for result in year%}
+                    <option  value="{{result.1}}">{{ result.0 }}</option>
+                {% endfor %}
+              </select>
+			<a style="font-weight: bolder;" href="#" data-toggle="modal" data-target="#myModal">Forgot your password?</a>
+			<button name="login" type="submit">Login</button>
+		</form>
+	</div>
+	<div class="overlay-container">
+		<div class="overlay">
+			<div class="overlay-panel overlay-left">
+				<button class="ghost" id="signIn">User Login?</button>
+			</div>
+			<div class="overlay-panel overlay-right">
+				<button style="width: 200px;" class="ghost" id="signUp">Admin Login?</button>
+			</div>
+		</div>
+	</div>
+</div>
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h3><i class="fa fa-lock fa-1x"></i>&nbspRecover Password!</h3>
+        </div>
+        <div class="modal-body">
+			<div class="form-group">
+				<form method="POST">
+					{% csrf_token %} 
+				<div class="input-group">
+                <div class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></div>
+		
+				<input name="email" id="email" type="email" class="form-control input-lg" placeholder="Enter Email" required data-parsley-type="email">
+				</div>    
+				<button style="margin-top: 15px;" type="submit" name="sendemail" id="sendemail" class="btn btn-block btn-lg">
+					<span class="glyphicon glyphicon-send"></span> SUBMIT
+				  </button></form>                 
+			</div>
+	
+        <div class="modal-footer">		
+        </div>
+      </div>      
+    </div>
+  </div>
+  </div>
+<script>
+    var signUpButton = document.getElementById('signUp');
+      var signInButton = document.getElementById('signIn');
+        var container = document.getElementById('container');
+       console.log(signInButton);
+       console.log(signUpButton);
+        signUpButton.addEventListener('click', () => {
+            container.classList.add("right-panel-active");
+        });
+
+  
+        signInButton.addEventListener('click', () => {
+            container.classList.remove("right-panel-active");
+        });
+        </script>
+</body>
+</html>

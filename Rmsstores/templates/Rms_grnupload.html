@@ -1,0 +1,58 @@
+{% extends 'Rms_mainpage.html' %}
+{%load crispy_forms_tags %}
+{% block content %}
+
+<h4 class="heading">GRN Temp Upload</h4>
+<hr>
+<style>
+    .heading{
+    color: #5A2C84;
+    text-align: center;
+    font-family:  "Monaco", monospace;
+    font-weight: bold;
+}
+    .post-form{
+      font-family:  "Monaco", monospace;
+    }
+  #table{  
+    border-collapse: collapse;
+  border: 2px solid rgba(221, 221, 221, 0.747);
+  text-align: center;
+  width: 100%;
+  }
+  #table td, #table th {  
+  border: 2px solid rgba(221, 221, 221, 0.747);
+  text-align: center;
+}
+#table tr:nth-child(even){background-color: #f2f2f2;}
+</style>
+   
+<link rel="stylesheet" href="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/wtf-forms.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+
+        <div class="row justify-content-center">
+          <div class="col-4">
+              <div class="card" style="background-color: #e5e7e9;"style="width: 21rem; height: 10rem; margin:5 auto;">
+                  <div class="card-body">
+                    <form  method="post" enctype="multipart/form-data" class="post-form">
+                      {% csrf_token %}
+                      <div class="form-group">
+                      <input id="customFile" class="form-control" type="file"name="excel_file"required="required">  
+                      </div>  
+                          <button type="submit" style="background-color: #5A2C84;color:white"class="btn btn-primary btn-primary float-right">Upload</button>
+                  </form>
+                  <button type="submit"onclick="location.href='{% url 'grnuploadrep' %}'" style="background-color: #5A2C84;color:white"class="btn btn-primary btn-primary float-left">Confirm Pending</button>
+                  </div>
+                  {% if messages %}
+                  <ul class="messages">
+                    {% for message in messages %}
+                        <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                        {{ table | safe }}
+                          {% endfor %}
+                  </ul>
+                    {% endif %}     
+              </div>  
+              
+          </div> 
+     
+{% endblock %}

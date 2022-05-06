@@ -1,0 +1,116 @@
+{% extends 'Rms_mainpage.html' %}
+{%load crispy_forms_tags %}
+
+<!DOCTYPE html>  
+<html lang="en">  
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    
+<body>  
+{% block content %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="https://code.highcharts.com/highcharts.src.js"></script>
+<div class="col-12 mx-auto">
+    <div class="row">
+        <div class="col-md-6 col-12">
+            <div class="card" style="margin-top: 10px;">
+                <div class="card-body">
+                    <canvas id="firstchart" width="300" height="200"></canvas>
+                    {{ form.groups|as_crispy_field }}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-12">
+            <div class="card" style="margin-top: 10px;">
+                <div class="card-body">
+                    <canvas id="secondchart" width="300" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>        
+</div>
+<script>
+    $(document).ready(Charts)
+    function Charts(){
+        $.ajax({
+            url:window.location.pathname,
+            cache: false,
+            success: function(response){
+                Invsales(response["chartdata"]);
+                Timeseries(response["timeseries"]);
+            }
+            
+        })
+    }
+ 
+    function Invsales(data){
+        var ctx = document.getElementById("firstchart");
+        var BarChart = new Chart(ctx,{
+            type:'bar',
+            data:data,
+            options:{
+                scales:{
+                    yAxes:[{
+                        ticks:{beginAtZero:true}
+                    }]
+                },
+                title:{display:true,text:"Inventory per Itemcode",
+                fontSize:20}
+            }
+        })
+        
+        $("#selval").on('change', function(){
+        $.ajax({
+            url:window.location.pathname,
+            type:'POST',
+            cache: false,
+            data: {'data':document.getElementById('selval').value},
+            dataType: 'JSON',
+            success: function(response){
+            BarChart.data = response["chartdata"];
+            BarChart.update();
+            }
+            
+        })
+    })
+    }
+function Timeseries(data){
+    var ctx = document.getElementById("secondchart");
+        var BarChart = new Chart(ctx,{
+            type:'bar',
+            data:data,
+            options:{
+                scales:{
+                    yAxes:[{
+                        ticks:{beginAtZero:true}
+                    }],
+                    xAxes: [{
+        type: 'time',
+        time: {
+          unit: 'day',
+          displayFormats: {
+            day: 'DD-MM-YYYY',
+          },
+        },
+        gridLines: {
+          offsetGridLines: true,
+        },
+				offset: true,
+      }],
+                    
+
+                },
+                title:{display:true,text:"Issued Items Qty vs Issue Date",
+                fontSize:20}
+            }
+        })
+        
+}
+</script>                                      
+{% endblock %}
+</body>  
+
+</html>  

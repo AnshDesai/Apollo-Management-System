@@ -1,0 +1,240 @@
+{% extends 'Rms_mainpage.html' %}
+{% load static %}
+{% load mathfilters %}
+{%load crispy_forms_tags %}
+{% load widget_tweaks %}
+
+<html>
+
+{% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<h4 class="heading">Issue items</h4>
+<hr>
+<style>
+    .heading{
+    color: #5A2C84;
+    text-align: center;
+    font-family:  "Monaco", monospace;
+    font-weight: bold;
+}
+  table, td, th {  
+  border: 1px solid #ddd;
+  text-align: left;
+  font-size: 10px;
+  
+  
+   }
+th{
+    background-color: #5A2C84;
+    color: white;
+    text-transform: uppercase;
+    font-size: 10px;
+    position: sticky;
+    top:0;
+    }
+    tbody{
+  height: 200px;
+  overflow-y: scroll;
+}
+
+</style>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script>
+  function checked(name){
+
+    var code = document.getElementsByName('chbox'+name);
+    
+    document.getElementById('batchc'+name).value = name;
+    index = 0;
+    for (var i = 0; i < code.length; i++) 
+    {index+=1;
+    console.log(document.getElementById('type'+name+index).value);
+    if(document.getElementById('type'+name+index).value!='Parked'){
+      code[i].disabled = false;
+      code[i].checked = false;
+    
+  }}
+  }
+   function toggle(element,itemcode) {
+ if( document.getElementById('hide'+itemcode).style.display=='none' ){
+   document.getElementById('hide'+itemcode).style.display = 'block'; 
+ }else{
+   document.getElementById('hide'+itemcode).style.display = 'none';
+ }
+}
+
+function unlock(name,type){
+  var check = document.getElementsByName(name);
+  var box = document.getElementsByClassName(name);
+  console.log(box);
+  for(var i=0;i<check.length;i++){ 
+    var count = i+1;
+    var c = document.getElementById(name+count);
+    console.log(c)  
+    if(c.checked && type!="Parked"){
+      
+      box[count-1].disabled = false;
+    }
+  }
+  
+}
+</script>
+<div class="row">
+      <div class="col-auto">
+        <form method="POST" action="Rms_issuerepfinal"class="post-form">
+          {% csrf_token %}
+          <input type="hidden" name="required" value="{{ requiredgrn.1 }}">
+          <input type="hidden" name="high" value="{{ requiredgrn.0 }}">
+          <input type="hidden" name="batch" value="{{ requiredgrn.2 }}">
+          <input type="hidden" name="itemdoc" value="{{ issued_quant }}"> 
+          <input type="hidden" name="shift" value="{{ shift }}"> 
+          <input type="hidden" name="issuedon" value="{{ issuedon }}">
+          <input type="hidden" name="mrno" value="{{ mrno }}">
+          <input type="hidden" name="remarks" value="{{ remarks }}">
+     
+    
+    {% for tab,i,z in gr_list %} 
+    
+      <table id="division" style="width: 100%;" class="table table-sm table-bordered table-striped">
+    	<tr style=" color:white;">
+            <th style="text-align: left; font-size: 12px;" colspan="100"> Item code : {{ i.0 }} 
+              <span style="font-size: 12px; text-transform: none;">Current Issue Qty :<input onchange="currentiss('{{ i.0 }}');" type="number" name="{{ i.0 }}" id="{{ i.0 }}" value="{{ i.1 }}"> 
+              <span style="font-size: 12px; text-transform: none;">Total Required Qty :<input onchange="reqchngreq('req{{ i.0 }}');" type="number" name="req{{ i.0 }}" id="req{{ i.0 }}" value="{{ i.1 }}"> 
+               
+            <span style="font-size: small;">
+            <button type="button" class="btn btn-sm" name="{{ i.0 }}" id="{{ i.0 }}" 
+              onclick="checked(name);" style="background-color:white;color:#5A2C84;font-weight: bold;">
+              Batch Wise</button></span>
+            <input type="hidden" id="chng{{ i.0 }}" value="" name="chng">
+            <input type="hidden" id="chngitem{{ i.0 }}" value=""  name="chngitem">
+            <input type="hidden" id="batchc{{ i.0 }}" name="batchc">
+            <input type="hidden" id="chngreq{{ i.0 }}" name="chngreq" value="{{ i.1 }}">
+            <input type="hidden" id="chngitemreq{{ i.0 }}" name="chngitemreq" value="">
+              <button type="button" style="color: white;" class="btn btn-default dropdown-toggle" data-toggle="dropdown" 
+              onclick="toggle(this,'{{ i.0 }}')" aria-haspopup="true" aria-expanded="false"></button>
+            </th>
+            </tr>
+            <tbody id="hide{{ i.0 }}" style="display: none;">
+      <tr style="font-size: 9px;  position: sticky;top: 0;">  <th></th>
+            <th>Issuing quantity</th><th>Type</th><th>Itemdoc</th><th>Itemcode</th><th>Itemdesc</th><th>Batch</th><th>Sloc</th>   
+            <th>vcode</th><th>recqty</th><th>unit</th><th>mandate</th><th>Upload No</th><th>Serial No</th>
+      </tr>
+      
+      {% for user in tab %}
+      {% if user.2 in required %}
+        <tr style="background: rgb(35, 129, 110);">
+          <input type="hidden" value="{{tab|length}}" id="count{{user.3}}"> 
+            <td><input type="checkbox" onchange="unlock(name,'{{ user.11 }}');" name="chbox{{ user.3 }}"id="chbox{{ user.3 }}{{forloop.counter}}" checked disabled></td>
+            <td><span style="font-size: 10px; text-transform: none;"><input class="chbox{{ user.3 }}" onblur="grnqtychng('{{ user.2 }}','{{ user.3 }}','{{ user.5 }}')" id="abc{{ user.2 }}{{ user.3 }}{{ user.5 }}" name="lalva" value="0" min="0" type="number"disabled>
+              <input type="hidden" name="items" value="0" id="a{{ user.2 }}{{ user.3 }}{{ user.5 }}">
+              <input type="hidden" value="{{user.11}}" id="type{{ user.3 }}{{forloop.counter}}">
+            </td></span>
+            <td>{{ user.11 }}</td>
+            <td>{{ user.2 }}</td><td>{{ user.3 }}</td><td>{{ user.4 }}</td>
+            <td>{{ user.5 }}</td><td>{{ user.6 }}</td><td>{{ user.7 }}</td><td>{{ user.8 }}</td><td>{{ user.9 }}</td>
+            <td>{{ user.10 }}</td><td>{{ user.0 }}</td><td>{{ user.1 }}</td>
+        </tr>
+        {% else %}
+        <tr id="rowcolor{{user.2}}{{user.3}}">
+          <td>
+            <input type="checkbox" onchange="unlock(name,'{{ user.11 }}');"  name="chbox{{ user.3 }}" id="chbox{{ user.3 }}{{ forloop.counter }}" disabled>
+            <td><span style="font-size: 10px; text-transform: none;"><input value="0"id="abc{{ user.2 }}{{ user.3 }}{{ user.5 }}" class="chbox{{ user.3 }}" onblur="grnqtychng('{{ user.2 }}','{{ user.3 }}','{{ user.5 }}')" type="number" name="lalva" min="0" disabled></td></span>
+            <input type="hidden" name="items" value="0" id="a{{ user.2 }}{{ user.3 }}{{ user.5 }}">
+            <input type="hidden" value="{{user.11}}" id="type{{ user.3 }}{{forloop.counter}}">
+            <td>{{ user.11 }}</td>
+            <td>{{ user.2 }}</td><td>{{ user.3 }}</td><td>{{ user.4 }}</td>
+            <td>{{ user.5 }}</td><td>{{ user.6 }}</td><td>{{ user.7 }}</td><td>{{ user.8 }}</td><td>{{ user.9 }}</td>
+            <td>{{ user.10 }}</td><td>{{  user.0 }}</td><td>{{ user.1 }}</td>
+          </tr>
+      
+        {% endif %}
+      
+        <script>
+          var quant = {{ issued_quant|safe }};
+          var doc = {{ user.2 }};
+          var high = {{ required|safe }};
+          var checkcode = "{{ user.3 }}";
+          $(document).ready(function(){
+            if("{{ user.11 }}" == "Parked"){
+            document.getElementById("rowcolor{{user.2}}{{user.3}}").style.background = "rgb(241,148,138)";
+          }
+          else if("{{ user.11 }}" == "Trial"){
+            document.getElementById("rowcolor{{user.2}}{{user.3}}").style.background = "rgb(214, 234, 248 )";
+          }
+          for(i in high)
+          {
+            if(i == "{{user.3}}"){
+            for(j in high[i]){
+              if(high[i][j] == "{{user.2}}"){
+               
+                document.getElementById("abc"+'{{ user.2 }}{{ user.3 }}{{ user.5 }}').value = parseInt(quant['{{ user.2 }}'+'-'+'{{ user.3 }}']);
+              document.getElementById("a"+'{{ user.2 }}{{ user.3 }}{{ user.5 }}').value = quant['{{ user.2 }}'+'-'+'{{ user.3 }}']+"+{{ user.2 }}+{{ user.3 }}+{{ user.5 }}";
+              }
+            }
+          }
+        }   
+            }  )
+        function currentiss(code){
+        var c =  parseFloat(document.getElementById(code).value);
+        var requiredquant = parseFloat(document.getElementById('req'+code).value);
+        var original = (document.getElementById("chng"+code).value);
+        if(c>requiredquant){
+        alert('Current issue quantity is greater than total required quantity\nChange required quantity first');
+        document.getElementById(code).value = requiredquant;
+        
+        return;
+        }
+        document.getElementById("chng"+code).value = code+'+'+c;
+        document.getElementById("chngitem"+code).value = code;
+        alert('Quantity for :'+code+' changed to '+c);
+        }
+        function reqchngreq(code){
+         var c =  document.getElementById(code).value;
+        document.getElementById("chng"+code).value = c;
+        document.getElementById("chngitem"+code).value = code;
+        alert('Quantity for :'+code+' changed to '+c);
+        }
+          </script>   
+      {% endfor %}
+    </tbody>
+    <script>
+     
+</script>
+  </table>
+
+  <script>function grnqtychng(itemdoc, itemcode,batch){
+  document.getElementById("a"+itemdoc+itemcode+batch).value = document.getElementById("abc"+itemdoc+itemcode+batch).value+"+"+itemdoc+"+"+itemcode+"+"+batch;
+  count = parseInt(document.getElementById("count"+itemcode).value);
+  //  console.log(typeof(count));
+   sum = 0;
+   curr = parseInt(document.getElementById(itemcode).value);
+   for(i=0;i<count;i++){
+    // console.log(document.getElementsByName('lalva')[i].value);
+     sum+= parseInt(document.getElementsByName('lalva')[i].value);
+    if(sum>curr){
+      alert("Sum Quantity of GRNs for: "+itemcode+" exceeds its current issue quantity");
+      document.getElementById("abc"+itemdoc+itemcode+batch).value = 0;
+      document.getElementById("a"+itemdoc+itemcode+batch).value = document.getElementById("abc"+itemdoc+itemcode+batch).value+"+"+itemdoc+"+"+itemcode+"+"+batch;
+      return;
+    }
+    }
+  }</script>
+  {% endfor %}
+
+</div>
+</div>
+
+<button type="submit" name="issue" id="issuebutton"class="btn"style="background-color: #5A2C84;color:white">Issue Material</button>
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+     </ul>
+{% endif %}      
+</form>
+
+
+{% endblock %}
+
+</html>

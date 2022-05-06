@@ -1,0 +1,196 @@
+{% extends 'Rms_mainpage.html' %}
+{% load static %}
+{% load mathfilters %}
+{%load crispy_forms_tags %}
+{% load widget_tweaks %}
+
+<html>
+
+{% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<h4 class="heading">ReIssue items</h4>
+<hr>
+<style>
+    .heading{
+    color: #5A2C84;
+    text-align: center;
+    font-family:  "Monaco", monospace;
+    font-weight: bold;
+}
+  table, td, th {  
+  border: 1px solid #ddd;
+  text-align: left;
+  font-size: 10px;
+  
+   }
+th{
+    background-color: #5A2C84;
+    color: white;
+    text-transform: uppercase;
+    font-size: 10px;
+    }
+    tbody{
+  height: 100px;
+  overflow-y: scroll;
+}
+</style>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script>
+  function checked(name){
+    var code = document.getElementsByName('chbox'+name);
+    
+    for (var i = 0; i < code.length; i++) 
+    {code[i].disabled = false;
+      code[i].checked = false;
+   }
+   var box = document.getElementsByClassName(name);
+    for (var i = 0; i < box.length; i++) 
+    {box[i].disabled = false;
+   } 
+  }
+   function toggle(element,itemcode) {
+ if( document.getElementById('hide'+itemcode).style.display=='none' ){
+   document.getElementById('hide'+itemcode).style.display = 'block'; 
+ }else{
+   document.getElementById('hide'+itemcode).style.display = 'none';
+ }
+}
+
+</script>
+<div class="row">
+      <div class="col-auto">
+        <form method="POST" action="Rms_pendingissuefinal"class="post-form">
+          {% csrf_token %}
+          <input type="hidden" name="required" value="{{ requiredgrn.1 }}">
+          <input type="hidden" name="high" value="{{ requiredgrn.0 }}">
+          <input type="hidden" name="batch" value="{{ requiredgrn.2 }}">
+          <input type="hidden" name="itemdoc" value="{{ issued_quant }}"> 
+          <input type="hidden" name="shift" value="{{ shift }}"> 
+          <input type="hidden" name="issuedon" value="{{ issuedon }}">
+          <input type="hidden" name="mrno" value="{{ mrno }}">
+          <input type="hidden" name="remarks" value="{{ remarks }}">
+                    
+    {% for tab,i,j in gr_list %} 
+
+      <table id="division" style="width: 100%;" class="table table-sm table-bordered table-striped">
+    	<tr style="color:white;">
+            <th style="text-align: left; font-size: 12px;"> Item code : {{ i.0 }} 
+              
+              <span style="font-size: 12px; text-transform: none;">Current Issue Qty :<input style="width: 90px;" onchange="currentiss('{{ i.0 }}');" type="number" name="{{ i.0 }}" id="{{ i.0 }}" value="{{ i.1 }}"> 
+                <span style="font-size: 12px; text-transform: none;">Total Remaining Qty :<input style="width: 90px;" type="number" value="{{ i.1 }}" name="rem{{ i.0 }}" id="rem{{ i.0 }}">
+                  <span style="font-size: 12px; text-transform: none;">Total Issued Qty :<input style="width: 90px;" type="number" value="{{ i.2 }}" name="aliss{{ i.0 }}" id="aliss{{ i.0 }}">
+                  <span style="font-size: 12px; text-transform: none;">Total Required Qty :<input style="width: 90px;" onchange="changedrequired('req{{ i.0 }}');" type="number" name="req{{ i.0 }}" id="req{{ i.0 }}" value="{{ j }}"> 
+            
+                  <span style="font-size: 12px;">
+            <button  type="button" class="btn btn-sm" name="{{ i.0 }}" id="{{ i.0 }}" 
+              onclick="checked(name);" style="background-color:white;color:#5A2C84;font-weight: bold;">
+              Batch Wise</button></span>
+
+            <input type="hidden" id="chng{{ i.0 }}" name="chng">
+            <input type="hidden" id="chngitem{{ i.0 }}" name="chngitem">
+            
+            <input type="hidden" id="chngreq{{ i.0 }}" name="chngreq" value="{{ i.1 }}">
+            <input type="hidden" id="chngitemreq{{ i.0 }}" name="chngitemreq" value="{{ i.1 }}">
+
+              
+              <button type="button" style="color: white;" class="btn btn-default dropdown-toggle" data-toggle="dropdown" 
+              onclick="toggle(this,'{{ i.0 }}')" aria-haspopup="true" aria-expanded="false"></button>
+            </th>
+            </tr>
+            <tbody id="hide{{ i.0 }}" style="display: none;">
+              <tr style="font-size: 9px; width: inherit;">  <th></th>
+                <th>Issuing quantity</th><th>Type</th><th>Itemdoc</th><th>Itemcode</th><th>Batch</th><th>Sloc</th>   
+                <th>vcode</th><th>recqty</th><th>unit</th><th>mandate</th><th>Upload No</th><th>Serial No</th>
+          </tr>
+      {% for user in tab %}
+      {% if user.2 in required %}
+        <tr style="background: rgb(0, 126, 0);">
+            <td><input type="checkbox" name="chbox{{ user.3 }}"id="{{ user.3 }}" checked></td>
+    
+            <td><span style="font-size: 10px; text-transform: none;"><input class="{{ user.3 }}" onblur="ansh('{{ user.2 }}','{{ user.3 }}','{{ user.5 }}')" id="abc{{ user.2 }}{{ user.3 }}{{ user.5 }}" value="abc" type="text"disabled>
+              <input type="hidden" name="items" value="0" id="a{{ user.2 }}{{ user.3 }}{{ user.5 }}">
+              
+            </td></span>
+            <td>{{ user.11 }}</td>
+            <td>{{ user.2 }}</td><td>{{ user.3 }}</td>
+            <td>{{ user.5 }}</td><td>{{ user.6 }}</td><td>{{ user.7 }}</td><td>{{ user.8 }}</td><td>{{ user.9 }}</td>
+            <td>{{ user.10 }}</td><td>{{ user.0 }}</td><td>{{ user.1 }}</td>
+        </tr>
+        {% else %}
+        <tr id="rowcolor{{user.2}}{{user.3}}">
+          <td>
+            <input type="checkbox" name="chbox{{ user.3 }}" id="{{ user.3 }}" disabled>
+            <td><span style="font-size: 10px; text-transform: none;"><input value="0"id="abc{{ user.2 }}{{ user.3 }}{{ user.5 }}" class="{{ user.3 }}" onblur="ansh('{{ user.2 }}','{{ user.3 }}','{{ user.5 }}')" type="text" disabled></td></span>
+            <input type="hidden" name="items" value="0" id="a{{ user.2 }}{{ user.3 }}{{ user.5 }}">
+            <td>{{ user.11 }}</td>
+            <td>{{ user.2 }}</td><td>{{ user.3 }}</td>
+            <td>{{ user.5 }}</td><td>{{ user.6 }}</td><td>{{ user.7 }}</td><td>{{ user.8 }}</td><td>{{ user.9 }}</td>
+            <td>{{ user.10 }}</td><td>{{  user.0 }}</td><td>{{ user.1 }}</td>
+      </tr>
+        {% endif %}
+        <script>
+          var issued_quant = {{ issued_quant|safe }};
+          var quant = {{ issued_quant|safe }};
+          var doc = {{ user.2 }};
+          var high = {{ required|safe }};
+          var checkcode = "{{ user.3 }}";
+          $(document).ready(function(){
+            if("{{ user.11 }}" == "Parked"){
+            document.getElementById("rowcolor{{user.2}}{{user.3}}").style.background = "rgb(241,148,138)";
+          }
+          else if("{{ user.11 }}" == "Trial"){
+            document.getElementById("rowcolor{{user.2}}{{user.3}}").style.background = "#ADD8E6";
+          }
+
+          for(i in high)
+          {
+            if(i == "{{user.3}}"){
+            for(j in high[i]){
+              if(high[i][j] == "{{user.2}}"){
+               
+                document.getElementById("abc"+'{{ user.2 }}{{ user.3 }}{{ user.5 }}').value = parseInt(quant['{{ user.2 }}'+'-'+'{{ user.3 }}']);
+              document.getElementById("a"+'{{ user.2 }}{{ user.3 }}{{ user.5 }}').value = quant['{{ user.2 }}'+'-'+'{{ user.3 }}']+"+{{ user.2 }}+{{ user.3 }}+{{ user.5 }}";
+              }
+            }
+          }
+        }   
+            }  )
+        function changedrequired(send){
+        var c =  document.getElementById(send).value;
+        document.getElementById("chng"+send).value = c;
+        document.getElementById("chngitem"+send).value = send;
+        alert('Quantity for :'+send+' changed to '+c);
+        }
+        function currentiss(code){
+        var c =  document.getElementById(code).value;
+        
+        document.getElementById("chng"+code).value = code+'+'+c;
+        document.getElementById("chngitem"+code).value = code;
+        alert('Quantity for :'+code+' changed to '+c);
+        }
+       
+          </script>  
+      {% empty %}
+        <tr>
+          <td colspan="5">No data</td>
+        </tr>
+        
+      {% endfor %}
+    </tbody>
+  </table>
+  {% endfor %}
+</div>
+</div>
+<button type="submit" name="issue" class="btn"style="background-color: #5A2C84;color:white">ReIssue Material</button>
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+     </ul>
+{% endif %}      
+</form>
+{% block javascript %}
+{% endblock %}
+{% endblock %}
+</html>

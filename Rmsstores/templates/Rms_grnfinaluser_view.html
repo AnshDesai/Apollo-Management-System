@@ -1,0 +1,101 @@
+{% extends 'Rms_mainpage.html' %}
+{% load static %}
+{%load crispy_forms_tags %}
+{% load widget_tweaks %}
+
+<html>
+
+{% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<h4 class="heading">GRN Final Upload</h4>
+<hr>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.5/css/buttons.dataTables.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.5/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.print.min.js"></script>
+<script>
+$(document).ready(function() {
+$('#division').DataTable( {
+    dom: 'lBfrtip',
+    buttons: [
+        'copy', 'csv', 'excel', 'pdf', 'print'
+    ]
+} );
+$('.dataTables_filter').addClass('pull-left');
+} );
+</script>
+<style>
+.heading{
+  color: #5A2C84;
+  text-align: center;
+  font-family:  "Monaco", monospace;
+  font-weight: bold;
+}  
+table, td, th {  
+font-size: 11px;  
+border: 1px solid #ddd;
+text-align: center;
+}
+
+table {
+border-collapse: collapse;
+width: 100%;
+}
+
+th, td {
+  
+padding: 15px;
+}
+th{
+  background-color: #5A2C84;
+  color: white;
+  text-transform: uppercase;}
+
+  .pull-left{
+    padding-left: 450px;
+float: left !important;
+}
+.dataTables_wrapper .dt-buttons {
+        padding-left: 50px;
+      }
+</style>
+<div class="row">
+  <div class="col-auto">
+      <table id="division" class="table table-sm table-bordered">
+    <thead>
+      <tr>  <th>Type</th>
+            <th>Serial No</th><th>Upload No</th><th>Itemdoc</th><th>Itemcode</th><th>Itemdesc</th><th>Batch</th><th>Sloc</th><th>grgi</th><th>headertxt</th><th>unloadpt</th><th>landbill</th>
+            <th>glacc</th><th>recepient</th><th>mvt</th><th>mttext</th><th>po</th><th>reference</th><th>stobin</th>
+            <th>usname</th><th>valtype</th><th>vcode</th><th>Available Qty</th><th>Recieved Qty</th><th>unit</th><th>pstdate</th><th>mandate</th>
+            <th>sled</th><th>amountlc</th><th>curr</th><th>docdate</th><th>entrydate</th><th>oun</th><th>ounqty</th><th>Packet AvgQty</th><th>Packets</th>
+      </tr></thead>
+      <tbody>
+        {% for user in f %}
+        <tr>
+          <td>{{ user.33 }}</td>
+            <td>{{ user.1 }}</td><td>{{ user.0 }}</td><td>{{ user.2 }}</td><td>{{ user.3 }}</td><td>{{ user.4 }}</td>
+            <td>{{ user.5 }}</td><td>{{ user.6 }}</td><td>{{ user.7 }}</td><td>{{ user.8 }}</td><td>{{ user.9 }}</td>
+            <td>{{ user.10 }}</td><td>{{ user.11 }}</td><td>{{ user.12 }}</td><td>{{ user.13 }}</td><td>{{ user.14 }}</td>
+            <td>{{ user.15 }}</td><td>{{ user.16 }}</td><td>{{ user.17 }}</td><td>{{ user.18 }}</td><td>{{ user.19 }}</td>
+            <td>{{ user.20 }}</td><td>{{ user.21 }}</td><td>{{ user.22 }}</td><td>{{ user.23 }}</td><td>{{ user.24 }}</td>
+            <td>{{ user.25 }}</td><td>{{ user.26 }}</td><td>{{ user.27 }}</td><td>{{ user.28 }}</td><td>{{ user.29 }}</td>
+            <td>{{ user.30 }}</td><td>{{ user.31 }}</td><td>{{ user.32 }}</td><td>{{ user.34 }}</td><td>{{ user.35 }}</td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="5">No data</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+</div>
+{% endblock %}
+
+</html>

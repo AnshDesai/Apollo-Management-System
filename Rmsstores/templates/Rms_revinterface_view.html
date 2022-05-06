@@ -1,0 +1,108 @@
+{% extends 'Rms_mainpage.html' %}
+{% load static %}
+{% load widget_tweaks %}
+<html>
+
+{% block content %}
+<h4 class="heading">Reversal Items</h4>
+<hr>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.5/css/buttons.dataTables.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.5/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.print.min.js"></script>
+<script>
+$(document).ready(function() {
+  $('#division').DataTable( {
+      dom: 'lBfrtip',
+      buttons: [
+          'copy',  'excel', 'pdf', 'print'
+      ]
+  } );
+} );
+</script>
+<style>
+
+      .heading{
+      color: #5A2C84;
+      text-align: center;
+      font-family:  "Monaco", monospace;
+      font-weight: bold;
+  }  
+table, td, th { 
+  font-size: 11px; 
+border: 1px solid #ddd;
+text-align: left;
+}
+th{
+  background-color: #5A2C84;
+  color: white;
+  text-transform: uppercase;
+}
+table {
+border-collapse: collapse;
+width: 100%;
+}
+
+th, td {
+padding: 15px;
+}
+.dataTables_wrapper .dt-buttons {
+      padding-left: 50px;
+    }
+</style>
+
+    <div class="row-justify-content-center">
+      <div class="col-auto">
+               
+      <table id="division" class="table table-sm table-bordered">
+    <thead>
+      <tr>
+        <th>Reverse <i class="bi bi-check-all"></i></th>
+        <th>mrsrno</th><th>mrno</th><th>itemdoc</th>
+        <th>itemcode</th><th>batch</th><th>vcode</th><th>issuedqty</th>
+        <th>unit</th><th>issue_by</th><th>issuedon</th><th>shift</th>
+        <th>Remarks</th></thead>
+      <tbody>
+        <form method="post" role="form" name="form"  enctype="multipart/form-data">
+    {% csrf_token %}
+      </tr>
+      {% for user in f %}
+        <tr style="font-size: 12px;">
+          <input type="hidden" value="" name="values" id="{{ user.0 }}{{ user.1 }}">
+          <td><input type="checkbox" name="reverse" onclick="onsend('{{ user.0 }}','{{ user.1 }}','{{ user.2 }}','{{ user.4 }}','{{ user.7 }}',
+          '{{ user.5 }}','{{ user.6 }}','{{ user.8 }}','{{ user.9 }}','{{ user.11 }}');" style="border: none; background: transparent;">
+        </td>
+          <td>{{ user.0 }}</td><td>{{ user.1 }}</td> <td>{{ user.2 }}</td>
+          <td>{{ user.4 }}</td><td>{{ user.5 }}</td><td>{{ user.6 }}</td><td>{{ user.7 }}</td>
+          <td>{{ user.8 }}</td><td>{{ user.9 }}</td><td>{{ user.10 }}</td><td>{{ user.11 }}</td>
+          <td>{{ remarks }}</td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="5">No data</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <button type="submit"  style="background-color: #5A2C84;color:white"class="btn btn-primary">Confirm</button> 
+</form> 
+</div>
+</div>
+  <script>
+       function onsend(sr,mr,doc,code,issqty,btch,vcode,unit,issue_by,shift,remarks){
+           console.log(sr);
+           console.log(mr);
+document.getElementById(sr+mr).value = sr+','+mr+','+doc+','+code+','+issqty+','+btch+','+vcode+','+unit+','+issue_by+','+shift;
+}
+  </script>
+
+{% block javascript %}
+{% endblock %}
+{% endblock %}
+</html>

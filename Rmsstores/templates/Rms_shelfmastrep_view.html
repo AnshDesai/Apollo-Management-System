@@ -1,0 +1,82 @@
+{% extends 'Rms_mainpage.html' %}
+{% load static %}
+{% load widget_tweaks %}
+<html>
+
+    {% block content %}
+    <h4 class="heading">Shelf Master Reports</h4>
+    <hr>
+    <style>
+        .heading{
+        color: #5A2C84;
+        text-align: center;
+        font-family:  "Monaco", monospace;
+        font-weight: bold;
+    }  
+  table, td, th {  
+  border: 1px solid #ddd;
+  text-align: left;
+  font-size: 11px;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+th{
+    background-color: #5A2C84;
+    color: white;
+    text-transform: uppercase;
+}
+th, td {
+  padding: 15px;
+}
+</style>
+
+    
+      <table id="division" class="table table-sm table-bordered">
+    
+      <tr>
+        <th>itemcode</th>
+        <th>groupno</th>
+        <th>itemdesc</th>
+        <th>shelflife</th>
+        <th>remarks</th>
+      </tr>
+      {% for user in f %}
+        <tr>
+            <td>{{ user.0 }}</td>
+          <td>{{ user.1 }}</td>
+          <td>{{ user.2 }}</td>
+          <td>{{ user.3 }}</td>
+          <td>{{ user.4 }}</td>
+          
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="5">No data</td>
+        </tr>
+      {% endfor %}
+ 
+  </table>
+
+  <style>
+    .export{
+  background-color: #5A2C84;
+  color: white;
+  padding: 4px 12px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 11px;
+}
+  </style>
+
+  <form method = "POST">
+    {% csrf_token %}
+    <input class="export" type="submit" value="EXPORT XLS" />
+</form>
+  {% block javascript %}
+  {% endblock %}
+  {% endblock %}
+  </html>

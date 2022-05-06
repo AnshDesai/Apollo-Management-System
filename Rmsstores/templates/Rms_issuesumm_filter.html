@@ -1,0 +1,45 @@
+{% extends 'Rms_mainpage.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+<!DOCTYPE html>  
+<html lang="en">  
+<!-- 
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<body>  
+    
+  {% block content%}
+  <h4 class="heading">Issue Summary</h4>
+<hr>
+<style>
+    .heading{
+    color: #5A2C84;
+    text-align: center;
+    font-family:  "Monaco", monospace;
+    font-weight: bold;
+}  
+    .post-form{
+        font-family:  "Monaco", monospace;
+}
+  </style>
+  
+    <div class="row justify-content-center">
+      <div class="col-3"> 
+        <div class="card"style="background-color: #e5e7e9;">
+          <div class="card-body">
+        <form method="GET" action="Rms_issuesumm_view" class="post-form">   
+          {% csrf_token %}
+          {{ form.mrno|as_crispy_field}}
+          {{ form.itemcode|as_crispy_field}}
+          {{ form.issuedon|as_crispy_field}}
+          
+          </div>
+          <button type="submit"style="background-color: #5A2C84;color:white" class="btn btn-primary">Save</button> 
+          </form>
+        </div>
+        </div>
+      </div>
+    
+  {% endblock %}

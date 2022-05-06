@@ -1,0 +1,111 @@
+{% extends 'Rms_mainpage.html' %}
+{%load crispy_forms_tags %} 
+<!DOCTYPE html>  
+<html lang="en">  
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+
+    
+{% block content %}
+<body onload="init();">  
+<script>
+    var observe;
+if (window.attachEvent) {
+    observe = function (element, event, handler) {
+        element.attachEvent('on'+event, handler);
+    };
+}
+else {
+    observe = function (element, event, handler) {
+        element.addEventListener(event, handler, false);
+    };
+}
+function init () {
+    var text = document.getElementById('text');
+    function resize () {
+        text.style.height = 'auto';
+        text.style.height = text.scrollHeight+'px';
+    }
+    /* 0-timeout to get the already changed text */
+    function delayedResize () {
+        window.setTimeout(resize, 0);
+    }
+    observe(text, 'change',  resize);
+    observe(text, 'cut',     delayedResize);
+    observe(text, 'paste',   delayedResize);
+    observe(text, 'drop',    delayedResize);
+    observe(text, 'keydown', delayedResize);
+
+    text.focus();
+    text.select();
+    resize();
+}
+var arrayOfLines = $('#text').val().split('\n');
+</script>
+<h4 class="heading">GRN ISSUE Quantity</h4>
+<hr>
+<style>
+    textarea {
+    border: 0 none white;
+    overflow: hidden;
+    padding: 0;
+    outline: none;
+    background-color: #D0D0D0;
+}
+    .post-form{
+      font-family:  "Monaco", monospace;
+    }
+    .asteriskField {
+    content: ' *';
+    color: red;}
+.heading{
+    color: #5A2C84;
+    text-align: center;
+    font-family:  "Monaco", monospace;
+    font-weight: bold;
+}
+  </style>
+
+    <div class="row justify-content-center">
+        <div class="col-5">
+            <div class="card" style="background-color: #e5e7e9;">
+                <div class="card-body">
+                    <form method="POST" class="post-form">   
+                            {% csrf_token %}
+                            <table class="table-sm">
+                                <tr>
+                                <td>{{ form.shift|as_crispy_field }}</td>
+                                <td>{{ form.issuedon|as_crispy_field }}</td>
+                          </tr>
+                            <tr><td>{{ form.remarks|as_crispy_field }}</td> </tr>
+                            <tr><td>
+                        <tr> <td colspan="2"> Enter Itemcode Quantity: </td> </tr> 
+                        <tr>  <td  colspan="2"> 
+                            <textarea rows="3" style="height:5em; width: 18em;" id="text" name="itemcode"></textarea>
+                        </td> </tr>
+                        <tr><td  colspan="2">
+                            <button type="submit" class="btn" name="matissue" style="background-color: #5A2C84;color:white">Issue</button>
+                        </td>
+                    </tr>
+                    <tr><td  colspan="2">
+                            {% if messages %}
+                                <ul class="messages">
+                                    {% for message in messages %}
+                                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                                    {% endfor %}
+                                 </ul>
+                            {% endif %}      
+                    </form>
+                </td>
+            </tr>
+                    </table>
+                </div>
+                </div>
+            </div>
+        </div> 
+   
+{% endblock %}
+</body>  
+
+</html>  

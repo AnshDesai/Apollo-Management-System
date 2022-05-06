@@ -1,0 +1,179 @@
+<html>
+<body>
+<form action="">
+	
+	<style type="text/css">
+ 
+	</style>
+	<table  style="text-align: center; border-collapse: collapse;" align="center" border="2" id="userTbl">
+	
+	<tr>
+		<th colspan="2">Date : {{ issuedon }}</th>
+		<th></th>
+		<th colspan="25">RM ISSUE SHEET - {{ planttype }}</th>
+		<th colspan="2">Shift : {{ shift }}</th>
+	</tr>
+	<tr>
+		<th rowspan="2">Sr.</th>
+		<th rowspan="2">MR NO.</th>
+		<th rowspan="2">M. Code</th>
+		<th rowspan="2">Qty.</th>
+		<th rowspan="2">Packing</th>
+		<th rowspan="2">GRN No.</th>
+		<th rowspan="2">GRN Date</th>
+		<th rowspan="2">Batch</th>
+		<th colspan="20">Issued Qty.</th>
+		<th rowspan="2">Pending Qty.</th>
+		<th rowspan="2">Sign</th>
+	
+	</tr>
+	
+	<tr>
+		<th>01</th>
+		<th>02</th>
+		<th>03</th>
+		<th>04</th>
+		<th>05</th>
+		<th>06</th>
+		<th>07</th>
+		<th>08</th>
+		<th>09</th>
+		<th>10</th>
+		<th>11</th>
+		<th>12</th>
+		<th>13</th>
+		<th>14</th>
+		<th>15</th>
+		<th>16</th>
+		<th>17</th>
+		<th>18</th>
+		<th>19</th>
+		<th>20</th>
+	</tr>
+
+	{% for i in issueitems %}
+<tr style="font-size: 15px;">
+	<td>{{ forloop.counter }}</td>
+	<td>{{ i.0 }}</td>
+	<td>{{ i.1 }}</td>
+	<td>{{ i.2 }}</td>
+	<td></td>
+	<td>{{ i.3 }}</td>
+	<td></td>
+	<td>{{ i.4 }}</td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>	
+</tr>
+{% if forloop.counter|divisibleby:30 %}
+
+<tr class="page">
+	<tr>
+		<th colspan="2">Date : {{ issuedon }}</th>
+		<th></th>
+		<th colspan="25">RM ISSUE SHEET - {{ planttype }}</th>
+		<th colspan="2">Shift : {{ shift }}</th>
+	</tr>
+	<tr>
+		<th rowspan="2">Sr.</th>
+		<th rowspan="2">MR NO.</th>
+		<th rowspan="2">M. Code</th>
+		<th rowspan="2">Qty.</th>
+		<th rowspan="2">Packing</th>
+		<th rowspan="2">GRN No.</th>
+		<th rowspan="2">GRN Date</th>
+		<th rowspan="2">Batch</th>
+		<th colspan="20">Issued Qty.</th>
+		<th rowspan="2">Pending Qty.</th>
+		<th rowspan="2">Sign</th>
+	
+	</tr>
+	
+	<tr>
+		<th>01</th>
+		<th>02</th>
+		<th>03</th>
+		<th>04</th>
+		<th>05</th>
+		<th>06</th>
+		<th>07</th>
+		<th>08</th>
+		<th>09</th>
+		<th>10</th>
+		<th>11</th>
+		<th>12</th>
+		<th>13</th>
+		<th>14</th>
+		<th>15</th>
+		<th>16</th>
+		<th>17</th>
+		<th>18</th>
+		<th>19</th>
+		<th>20</th>
+	</tr>
+</tr>
+{% endif %}
+{% endfor %}
+
+{% for i in extra|get_range %}
+<tr style="font-size: 12px;">
+	<td>{{ forloop.counter|add:issue_len }}</td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>	
+</tr>
+
+{% endfor %}
+
+</table>
+	<!-- <input type="button" class="my-3 btn btn-md" style="background-color: #5A2C84; color: white;" value="Download to Excel" onclick="exportExl()" value="Export">
+				<input type="hidden" value="" name="action" id="action" />
+				 -->
+		</form>
+</body>
+</html>

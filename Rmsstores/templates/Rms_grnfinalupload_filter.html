@@ -1,0 +1,65 @@
+{% extends 'Rms_mainpage.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+<!DOCTYPE html>  
+<html lang="en">  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<body>  
+    
+  {% block content%}
+  <h4 class="heading">GRN Posting</h4>
+<hr>
+<style>
+    .heading{
+    color: #5A2C84;
+    text-align: center;
+    font-family:  "Monaco", monospace;
+    font-weight: bold;
+}  
+    .post-form{
+        font-family:  "Monaco", monospace;
+}
+  </style>
+  
+  <div class="row justify-content-center">
+    <div class="col-5">
+      <div class="card" style="background-color: #E5E7E9 ">
+      <div class="card-body" style="height: 410px; overflow-y: scroll;"> 
+        <form method="GET" action="Rms_grnfinalupload" class="post-form">   
+          <table class="table table-sm">
+            
+            <tr>
+            <td >{{ form.flag|as_crispy_field}}</td>
+            <td> {{ form.type|as_crispy_field}}</td></tr>
+      
+            <tr>
+              <td> {{ form.pstdate__gte|as_crispy_field}}</td>
+              <td> {{ form.pstdate__lte|as_crispy_field}}</td>
+            </tr>
+            
+            <tr>
+              <td> {{ form.itemcode|as_crispy_field}}</td>
+              <td> {{ form.vcode|as_crispy_field}}</td>
+            </tr>
+            <tr>
+              <td> {{ form.itemdoc|as_crispy_field}}</td>
+              <td> {{ form.sloc|as_crispy_field}}</td>
+            </tr>
+            
+             <td> {{ form.batch|as_crispy_field}}
+ 
+             </td>
+
+          </table>
+          </div>
+          <button type="submit"style="background-color: #5A2C84;color:white" class="btn btn-primary">Search</button> 
+          </form>
+        </div>
+      </div>
+   </div>	
+ </div>
+    
+  {% endblock %}
+
+   
